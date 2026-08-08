@@ -1724,8 +1724,9 @@ Replaces the `if` chain and closes the drift that let `spelling-bee` and `connec
 **Interfaces:**
 - Consumes: all six renderer components
 - Produces:
-  - `PUZZLE_RENDERERS: Record<string, Component>`
   - `<PuzzleRenderer puzzle />` — dispatches on `puzzle.type`, renders a labelled placeholder for unknown types
+
+`PUZZLE_RENDERERS` stays module-private. Nothing outside this file consumes it — Tasks 9 and 10 import only `PuzzleRenderer` — and exporting it would trip `react-refresh/only-export-components`, since that rule fires on any exported non-component value sharing a file with an exported component. Keeping it unexported avoids a lint suppression that would exist purely to protect an unused export.
 
 - [ ] **Step 1: Write the registry**
 
@@ -1744,7 +1745,9 @@ import { SECTION_LABELS } from './logic'
 
 // A lookup table, not a factory. Adding a backend puzzle type means adding one
 // line here; anything missing renders a visible placeholder rather than a JSON dump.
-export const PUZZLE_RENDERERS = {
+// Not exported: nothing outside this file needs it, and exporting it would trip
+// react-refresh/only-export-components.
+const PUZZLE_RENDERERS = {
   crossword: Crossword,
   maze: Maze,
   'word-search': WordSearch,
@@ -1769,7 +1772,7 @@ export function PuzzleRenderer({ puzzle }) {
 
 - [ ] **Step 2: Point App.jsx at it**
 
-In `frontend/src/App.jsx`, delete the `Puzzle` function, remove the six per-renderer imports added in Task 5, and add:
+In `frontend/src/App.jsx`, delete the `Puzzle` function, remove **five** of the six per-renderer imports added in Task 5, and add the line below. Keep the `PuzzleFrame` import: `App.jsx` still uses it directly for the Editor's Note, Article, and Teaser blocks, which have nothing to do with puzzle dispatch. Task 9 removes those call sites and the import with them.
 
 ```jsx
 import { PuzzleRenderer } from './puzzles'
