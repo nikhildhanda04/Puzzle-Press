@@ -1,0 +1,166 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+enum IssueStatus {
+  draft
+  published
+}
+
+enum SubscriberStatus {
+  active
+  unsubscribed
+}
+
+model Issue {
+  id            String           @id @default(cuid())
+  number        Int              @unique
+  slug          String           @unique
+  title         String
+  theme         String?
+  status        IssueStatus      @default(draft)
+  coverImageUrl String?
+  sourceStory   String           @default("")
+  editorNote    String           @default("")
+  articleTitle  String           @default("")
+  articleBody   String           @default("")
+  teaser        String           @default("")
+  publishedAt   DateTime?
+  createdAt     DateTime         @default(now())
+  updatedAt     DateTime         @updatedAt
+  puzzles       Puzzle[]
+  emailSends    IssueEmailSend[]
+}
+
+model Puzzle {
+  id        String   @id @default(cuid())
+  issueId   String
+  type      String
+  title     String
+  prompt    String   @default("")
+  puzzle    Json
+  solution  Json
+  hints     Json?
+  sortOrder Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  issue     Issue    @relation(fields: [issueId], references: [id], onDelete: Cascade)
+
+  @@unique([issueId, type])
+  @@index([issueId, sortOrder])
+}
+
+model PromptTemplate {
+  id        String   @id @default(cuid())
+  section   String
+  name      String
+  body      String
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@unique([section, name])
+}
+
+model MediaAsset {
+  id        String   @id @default(cuid())
+  title     String
+  altText   String
+  url       String
+  notes     String   @default("")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Subscriber {
+  id               String           @id @default(cuid())
+  email            String           @unique
+  status           SubscriberStatus @default(active)
+  consentedAt      DateTime         @default(now())
+  unsubscribeToken String           @unique
+  createdAt        DateTime         @default(now())
+  updatedAt        DateTime         @updatedAt
+  emailSends       IssueEmailSend[]
+}
+
+model IssueEmailSend {
+  id                String     @id @default(cuid())
+  issueId           String
+  subscriberId      String
+  providerMessageId String?
+  status            String
+  error             String?
+  sentAt            DateTime?
+  createdAt         DateTime   @default(now())
+  issue             Issue      @relation(fields: [issueId], references: [id], onDelete: Cascade)
+  subscriber        Subscriber @relation(fields: [subscriberId], references: [id], onDelete: Cascade)
+
+  @@unique([issueId, subscriberId])
+  @@index([status])
+}
+
+model User {
+  id            String    @id
+  name          String
+  email         String    @unique
+  emailVerified Boolean   @default(false)
+  image         String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  sessions      Session[]
+  accounts      Account[]
+
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  userId    String
+  token     String   @unique
+  expiresAt DateTime
+  ipAddress String?
+  userAgent String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  userId                String
+  accountId             String
+  providerId            String
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime  @default(now())
+  updatedAt             DateTime  @updatedAt
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("account")
+}
+
+model Verification {
+  id         String   @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("verification")
+}

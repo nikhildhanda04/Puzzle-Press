@@ -1,0 +1,361 @@
+.paper-shell {
+  width: min(1120px, calc(100% - 24px));
+  min-height: 100vh;
+  margin: 0 auto;
+  background:
+    linear-gradient(rgba(70, 46, 20, 0.06) 1px, transparent 1px),
+    radial-gradient(circle at 18% 12%, rgba(255, 255, 255, 0.28), transparent 28%),
+    #f3df9d;
+  background-size: 100% 26px, 100% 100%, auto;
+  border-left: 2px solid #3b2615;
+  border-right: 2px solid #3b2615;
+  box-shadow: 0 18px 60px rgba(38, 24, 12, 0.28);
+}
+
+.masthead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  padding: 18px 24px;
+  border-bottom: 4px double #3b2615;
+}
+
+.brand,
+h1,
+h2 {
+  font-family: PressStart, 'Courier New', monospace;
+  text-transform: uppercase;
+}
+
+.brand {
+  border: 0;
+  background: transparent;
+  color: #28190f;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+nav button,
+.issue-cards button,
+.archive-grid button,
+.toolbar button,
+.admin-row,
+.primary,
+form button,
+.word-list button,
+.trivia button {
+  color: #28190f;
+  background: #f8eebf;
+  border: 2px solid #3b2615;
+  box-shadow: 3px 3px 0 #3b2615;
+  padding: 8px 10px;
+}
+
+main {
+  padding: 24px;
+}
+
+.hero-issue {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(240px, 0.75fr);
+  gap: 28px;
+  min-height: 430px;
+  align-items: center;
+  border-bottom: 4px double #3b2615;
+}
+
+.kicker,
+.issue-line,
+.score {
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+}
+
+h1 {
+  margin: 12px 0;
+  font-size: clamp(40px, 8vw, 84px);
+  line-height: 1;
+}
+
+h2 {
+  margin: 0 0 14px;
+  font-size: 20px;
+  border-bottom: 2px solid #3b2615;
+}
+
+h3 {
+  font-size: 26px;
+  margin: 0 0 10px;
+}
+
+p {
+  line-height: 1.6;
+}
+
+.primary {
+  margin-top: 18px;
+  background: #f0b33f;
+  font-weight: 900;
+}
+
+.cover-art {
+  aspect-ratio: 4 / 5;
+  display: grid;
+  place-items: center;
+  border: 3px solid #3b2615;
+  background:
+    repeating-linear-gradient(45deg, #362211 0 12px, #f0b33f 12px 24px),
+    #f0b33f;
+  box-shadow: inset 0 0 0 12px #f8eebf;
+  font-family: 'Courier New', monospace;
+  font-size: 34px;
+  font-weight: 900;
+}
+
+.cover-art span {
+  background: #f8eebf;
+  padding: 4px 10px;
+  border: 2px solid #3b2615;
+}
+
+.news-grid,
+.admin-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
+  padding: 24px 0;
+}
+
+.news-grid article,
+.subscribe,
+.admin section,
+.page,
+.mag-section {
+  border: 2px solid #3b2615;
+  background: rgba(255, 246, 199, 0.68);
+  padding: 18px;
+}
+
+.news-grid p {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-line-clamp: 6;
+  -webkit-box-orient: vertical;
+}
+
+input {
+  box-sizing: border-box;
+  width: 100%;
+  margin: 8px 0;
+  border: 2px solid #3b2615;
+  background: #fff6c7;
+  padding: 10px;
+}
+
+.strip {
+  border-top: 4px double #3b2615;
+  padding-top: 24px;
+}
+
+.issue-cards,
+.archive-grid,
+.toolbar,
+.word-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.archive-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.archive-grid button {
+  text-align: left;
+}
+
+.archive-grid span,
+.archive-grid small {
+  display: block;
+  margin-top: 8px;
+}
+
+.magazine {
+  display: grid;
+  gap: 18px;
+}
+
+.issue-title {
+  text-align: center;
+  border-bottom: 4px double #3b2615;
+}
+
+.mag-section {
+  break-inside: avoid;
+}
+
+.crossword-grid,
+.maze-grid {
+  display: grid;
+  width: min(100%, 360px);
+  gap: 3px;
+}
+
+.crossword-grid {
+  grid-template-columns: repeat(var(--size), 1fr);
+}
+
+.crossword-grid input,
+.maze-grid button,
+.word-grid button {
+  aspect-ratio: 1;
+  margin: 0;
+  text-align: center;
+  border: 2px solid #3b2615;
+  background: #fff6c7;
+  font-family: 'Courier New', monospace;
+  font-weight: 900;
+}
+
+.maze-grid {
+  grid-template-columns: repeat(var(--cols), 1fr);
+}
+
+.maze-grid .wall {
+  background: #3b2615;
+}
+
+.maze-grid .marked,
+.word-list .found,
+.selected {
+  background: #f0b33f;
+}
+
+.word-grid {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(28px, 42px));
+  gap: 4px;
+}
+
+.trivia {
+  padding: 12px 0;
+  border-bottom: 1px dashed #3b2615;
+}
+
+.trivia button {
+  margin: 6px 8px 0 0;
+}
+
+.difficulty {
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border: 1px solid #3b2615;
+  padding: 1px 6px;
+  margin-right: 8px;
+}
+
+.explanation {
+  margin-top: 8px;
+  font-size: 14px;
+  font-style: italic;
+  border-left: 3px solid #3b2615;
+  padding-left: 10px;
+}
+
+.admin {
+  display: grid;
+  gap: 18px;
+}
+
+.review {
+  display: grid;
+  gap: 16px;
+}
+
+.prompt-box {
+  display: grid;
+  gap: 6px;
+}
+
+.prompt-box textarea {
+  font: inherit;
+  padding: 8px;
+  border: 2px solid #3b2615;
+  background: #f8eebf;
+  color: #28190f;
+}
+
+.draft {
+  border: 2px solid #3b2615;
+  padding: 12px 16px;
+}
+
+.draft h3 {
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.draft pre {
+  overflow-x: auto;
+  white-space: pre-wrap;
+}
+
+.admin-grid {
+  grid-template-columns: minmax(260px, 0.8fr) minmax(0, 1.2fr);
+}
+
+.admin-row {
+  display: block;
+  width: 100%;
+  margin-bottom: 8px;
+  text-align: left;
+}
+
+pre {
+  max-height: 520px;
+  overflow: auto;
+  background: #28190f;
+  color: #f8eebf;
+  padding: 14px;
+}
+
+.notice {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  max-width: 320px;
+  background: #28190f;
+  color: #f8eebf;
+  border: 2px solid #f8eebf;
+  padding: 12px;
+}
+
+@media (max-width: 760px) {
+  .masthead,
+  .hero-issue {
+    display: block;
+  }
+
+  nav {
+    margin-top: 12px;
+  }
+
+  .cover-art {
+    margin-top: 24px;
+  }
+
+  .news-grid,
+  .admin-grid {
+    grid-template-columns: 1fr;
+  }
+}

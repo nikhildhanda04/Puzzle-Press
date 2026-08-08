@@ -1,0 +1,29 @@
+@font-face {
+  font-family: PressStart;
+  src: local('Courier New');
+}
+
+:root {
+  color: #28190f;
+  background: #d2b25d;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+}
+
+button,
+input,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
