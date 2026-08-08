@@ -76,6 +76,8 @@ export function shuffle(items, seed = 1) {
   const out = [...items]
   let state = seed
   for (let index = out.length - 1; index > 0; index -= 1) {
+    // ponytail: LCG operates at float precision (exceeds MAX_SAFE_INTEGER after first iteration),
+    // valid for fixture sizes (7 letters, 16 words); upgrade to uint32 LCG if permutation quality matters at scale
     state = (state * 1103515245 + 12345) % 2147483648
     const swap = state % (index + 1)
     ;[out[index], out[swap]] = [out[swap], out[index]]

@@ -2,6 +2,7 @@ import test from 'node:test'
 import assert from 'node:assert/strict'
 
 import {
+  SECTION_LABELS,
   toggleFound,
   scoreQuestions,
   checkBeeWord,
@@ -54,6 +55,26 @@ test('checkBeeWord accepts a listed word and flags the pangram', () => {
   assert.equal(checkBeeWord('decorate', bee, []).pangram, true)
 })
 
+test('checkBeeWord guard order: short before no-center', () => {
+  // ACE is both too short (3 < 4) and missing center (no R)
+  assert.equal(checkBeeWord('ACE', bee, []).status, 'short')
+})
+
+test('checkBeeWord guard order: short before bad-letter', () => {
+  // ACS is both too short (3 < 4) and has bad letter (S)
+  assert.equal(checkBeeWord('ACS', bee, []).status, 'short')
+})
+
+test('checkBeeWord guard order: no-center before bad-letter', () => {
+  // ACES is valid length, but missing R and has S
+  assert.equal(checkBeeWord('ACES', bee, []).status, 'no-center')
+})
+
+test('checkBeeWord guard order: bad-letter before already', () => {
+  // GRATE has bad letter G, should fail there even if already found
+  assert.equal(checkBeeWord('GRATE', bee, ['GRATE']).status, 'bad-letter')
+})
+
 test('beeProgress reports counts and percent', () => {
   assert.deepEqual(beeProgress(['CRATE', 'DECORATE'], bee), {
     found: 2, total: 5, pangramsFound: 1, pangramsTotal: 1, percent: 40,
@@ -65,6 +86,11 @@ test('toggleSelection caps at four', () => {
   const four = ['A', 'B', 'C', 'D']
   assert.deepEqual(toggleSelection(four, 'E'), four)
   assert.deepEqual(toggleSelection(four, 'B'), ['A', 'C', 'D'])
+})
+
+test('toggleSelection adds below the cap', () => {
+  assert.deepEqual(toggleSelection(['A', 'B'], 'C'), ['A', 'B', 'C'])
+  assert.deepEqual(toggleSelection([], 'X'), ['X'])
 })
 
 test('checkConnectionsGuess needs all four of one group', () => {
@@ -87,6 +113,14 @@ test('shuffle is deterministic for a seed and keeps every item', () => {
   assert.notDeepEqual(shuffle(items, 7), items)
   assert.deepEqual([...shuffle(items, 7)].sort(), [...items].sort())
   assert.deepEqual(items, ['A', 'B', 'C', 'D', 'E', 'F'])
+})
+
+test('SECTION_LABELS has all nine keys with non-empty values', () => {
+  const keys = ['article', 'crossword', 'maze', 'word-search', 'spelling-bee', 'connections', 'trivia', 'logic', 'reasoning']
+  for (const key of keys) {
+    assert.equal(typeof SECTION_LABELS[key], 'string', `${key} must be a string`)
+    assert.ok(SECTION_LABELS[key].length > 0, `${key} must have a non-empty value`)
+  }
 })
 
 test('devanagariNumber converts digits', () => {
