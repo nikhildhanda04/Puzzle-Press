@@ -1,0 +1,41 @@
+.admin { padding-top: 2rem; padding-bottom: 4rem; }
+
+.admin-head { display: flex; align-items: baseline; gap: 1rem; flex-wrap: wrap; }
+.admin-head h1 { margin-right: auto; }
+
+.admin-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr);
+  gap: 1.5rem;
+  margin: 2rem 0;
+}
+
+.admin-create { display: grid; gap: 0.6rem; align-content: start; border: var(--rule); padding: 1.25rem; background: var(--paper-2); }
+.admin-create input { border: var(--rule); background: var(--paper); padding: 0.5rem 0.7rem; }
+
+.issue-list { display: grid; gap: 0.4rem; align-content: start; }
+
+.admin-row {
+  display: grid;
+  gap: 0.15rem;
+  text-align: left;
+  border: var(--rule-thin);
+  background: var(--paper);
+  padding: 0.6rem 0.8rem;
+}
+
+.admin-row.is-on { background: var(--yellow); border: var(--rule); }
+
+.review { border-top: 6px double var(--ink); padding-top: 1.5rem; }
+.prompt-box { display: grid; gap: 0.4rem; margin: 1rem 0; }
+.prompt-box textarea { border: var(--rule); background: var(--paper); padding: 0.7rem; }
+
+.draft { border: var(--rule-thin); padding: 1.25rem; margin: 1.25rem 0; background: var(--paper-2); }
+.draft h3 { text-transform: uppercase; color: var(--red); }
+.draft pre { overflow-x: auto; background: var(--ink); color: var(--paper); padding: 0.8rem; font-size: 0.78rem; }
+
+.ink-button.publish { background: var(--red); color: var(--paper); }
+
+@media (max-width: 860px) {
+  .admin-grid { grid-template-columns: 1fr; }
+}
