@@ -319,7 +319,7 @@ git commit -m "feat(ui): add desi retro design tokens, CSS texture, base styles"
 
 ### Task 2: Extract the API client and router hook
 
-Pure extraction. No behaviour change. This exists so later tasks can import them instead of reaching into `App.jsx`.
+Extraction, so later tasks can import these instead of reaching into `App.jsx`. Behaviour is preserved with one deliberate exception: `fetchJson` now throws `Request failed: <status>` instead of a bare `Request failed`. No caller reads `error.message` — every call site either swallows the error or substitutes its own notice text — so this is observable only in a debugger, where the status code is worth having.
 
 **Files:**
 - Create: `frontend/src/lib/api.js`
