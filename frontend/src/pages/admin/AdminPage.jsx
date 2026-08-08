@@ -29,7 +29,7 @@ export function AdminPage({ issues, setIssues, selectedIssueId, setSelectedIssue
     event.preventDefault()
     await run('Create draft', async () => {
       const data = await fetchAdmin('/api/admin/issues', { method: 'POST', body: JSON.stringify({ title, theme }) })
-      setIssues([data.issue, ...issues])
+      setIssues((current) => [data.issue, ...current])
       setSelectedIssueId(data.issue.id)
       setNotice('Draft issue created.')
     })
@@ -51,7 +51,7 @@ export function AdminPage({ issues, setIssues, selectedIssueId, setSelectedIssue
     if (!window.confirm(`Publish "${selected.title}" and email every active subscriber?`)) return
     await run('Publish', async () => {
       const data = await fetchAdmin(`/api/admin/issues/${selected.id}/publish`, { method: 'POST' })
-      setIssues(issues.map((issue) => (issue.id === data.issue.id ? data.issue : issue)))
+      setIssues((current) => current.map((issue) => (issue.id === data.issue.id ? data.issue : issue)))
       setNotice(`Published and queued ${data.emailSends} email sends.`)
     })
   }
@@ -85,7 +85,9 @@ export function AdminPage({ issues, setIssues, selectedIssueId, setSelectedIssue
           <h2>New issue</h2>
           <input value={title} onChange={(event) => setTitle(event.target.value)} aria-label="Issue title" />
           <input value={theme} onChange={(event) => setTheme(event.target.value)} aria-label="Theme" />
-          <button className="ink-button">Create draft</button>
+          <button className="ink-button" disabled={Boolean(busy)}>
+            {busy === 'Create draft' ? 'Creating…' : 'Create draft'}
+          </button>
         </form>
 
         <IssueList issues={issues} selectedIssueId={selected?.id} onSelect={setSelectedIssueId} />
