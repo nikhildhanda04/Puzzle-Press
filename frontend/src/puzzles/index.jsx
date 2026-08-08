@@ -10,8 +10,7 @@ import { SECTION_LABELS } from './logic'
 
 // A lookup table, not a factory. Adding a backend puzzle type means adding one
 // line here; anything missing renders a visible placeholder rather than a JSON dump.
-// eslint-disable-next-line react-refresh/only-export-components -- PUZZLE_RENDERERS is a required export (Tasks 9/10 depend on it), not just an internal constant to hoist elsewhere.
-export const PUZZLE_RENDERERS = {
+const PUZZLE_RENDERERS = {
   crossword: Crossword,
   maze: Maze,
   'word-search': WordSearch,
