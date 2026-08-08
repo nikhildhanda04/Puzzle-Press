@@ -115,8 +115,8 @@ test('shuffle is deterministic for a seed and keeps every item', () => {
   assert.deepEqual(items, ['A', 'B', 'C', 'D', 'E', 'F'])
 })
 
-test('SECTION_LABELS has all nine keys with non-empty values', () => {
-  const keys = ['article', 'crossword', 'maze', 'word-search', 'spelling-bee', 'connections', 'trivia', 'logic', 'reasoning']
+test('SECTION_LABELS has all eleven keys with non-empty values', () => {
+  const keys = ['editorNote', 'article', 'crossword', 'maze', 'word-search', 'spelling-bee', 'connections', 'trivia', 'logic', 'reasoning', 'teaser']
   for (const key of keys) {
     assert.equal(typeof SECTION_LABELS[key], 'string', `${key} must be a string`)
     assert.ok(SECTION_LABELS[key].length > 0, `${key} must have a non-empty value`)

@@ -1,4 +1,5 @@
 export const SECTION_LABELS = {
+  editorNote: "Editor's Note",
   article: 'The Article',
   crossword: 'Crossword',
   maze: 'The Maze',
@@ -8,6 +9,7 @@ export const SECTION_LABELS = {
   trivia: 'Trivia',
   logic: 'Logic',
   reasoning: 'Reasoning',
+  teaser: 'Next Issue',
 }
 
 export function toggleFound(found, word) {

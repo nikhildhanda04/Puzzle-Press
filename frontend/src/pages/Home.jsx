@@ -41,7 +41,7 @@ export function Home({ issue, issues, navigate, setNotice }) {
       <section className="page-width back-issues">
         <h2>Back issues</h2>
         <div className="issue-cards">
-          {issues.map((old) => (
+          {issues.filter((old) => old.slug !== issue.slug).map((old) => (
             <button key={old.slug} className="issue-card" onClick={() => navigate(`/issues/${old.slug}`)}>
               <span className="issue-card-number">{devanagariNumber(String(old.number).padStart(3, '0'))}</span>
               <strong>{old.theme ?? old.title}</strong>

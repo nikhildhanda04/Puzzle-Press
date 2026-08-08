@@ -14,7 +14,7 @@ export function IssuePage({ issue }) {
       <Poster issue={issue} kicker={date} />
 
       <div className="page-width">
-        <SectionDivider index={0} type="article" title="Editor's note" />
+        <SectionDivider index={0} type="editorNote" title="Editor's note" />
         <div className="prose"><p>{issue.editorNote}</p></div>
 
         <SectionDivider index={1} type="article" title={issue.articleTitle || SECTION_LABELS.article} />
@@ -31,7 +31,7 @@ export function IssuePage({ issue }) {
           </div>
         ))}
 
-        <SectionDivider index={(issue.puzzles?.length ?? 0) + 2} type="article" title="Next issue" />
+        <SectionDivider index={(issue.puzzles?.length ?? 0) + 2} type="teaser" title="Next issue" />
         <div className="prose"><p>{issue.teaser}</p></div>
       </div>
     </main>
