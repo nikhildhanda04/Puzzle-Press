@@ -105,3 +105,46 @@
 .bee-bar span { display: block; height: 100%; background: var(--red); transition: width 160ms; }
 
 .ink-button.is-found { background: var(--paper-2); box-shadow: none; cursor: default; }
+
+.conn-board {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin: 1rem 0;
+}
+
+.conn-word {
+  min-height: 4.2rem;
+  border: var(--rule);
+  background: var(--paper-2);
+  box-shadow: 3px 3px 0 var(--ink);
+  font-family: var(--chrome);
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.3rem;
+  word-break: break-word;
+}
+
+.conn-word.is-on { background: var(--ink); color: var(--paper); box-shadow: none; }
+
+.conn-band {
+  display: grid;
+  gap: 0.2rem;
+  background: var(--band, var(--yellow));
+  border: var(--rule);
+  padding: 0.7rem 0.9rem;
+  margin-bottom: 0.5rem;
+  font-family: var(--chrome);
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  font-size: 0.8rem;
+}
+
+.conn-reveal { border-top: var(--rule-thin); margin-top: 1rem; padding-top: 1rem; }
+
+@media (max-width: 520px) {
+  .conn-board { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .bee-hive { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+}
