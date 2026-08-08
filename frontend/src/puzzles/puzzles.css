@@ -65,3 +65,43 @@
 .verdict.is-wrong { color: var(--ink-soft); }
 
 .logic-setup { font-size: 1.1rem; }
+
+.bee-hive {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+  list-style: none;
+  padding: 0;
+  margin: 1rem 0;
+  max-width: 22rem;
+}
+
+.bee-cell {
+  width: 100%;
+  aspect-ratio: 1;
+  border: var(--rule);
+  background: var(--paper-2);
+  box-shadow: 3px 3px 0 var(--ink);
+  font-family: var(--display);
+  font-size: 1.8rem;
+  clip-path: polygon(25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%, 0 50%);
+}
+
+.bee-cell.is-center { background: var(--yellow); color: var(--ink); }
+
+.bee-form { display: flex; flex-wrap: wrap; gap: 0.5rem; margin: 1rem 0; }
+
+.bee-form input {
+  flex: 1 1 12rem;
+  border: var(--rule);
+  background: var(--paper);
+  padding: 0.55rem 0.7rem;
+  font-family: var(--chrome);
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.bee-bar { height: 10px; border: var(--rule); background: var(--paper-2); margin: 0.75rem 0; }
+.bee-bar span { display: block; height: 100%; background: var(--red); transition: width 160ms; }
+
+.ink-button.is-found { background: var(--paper-2); box-shadow: none; cursor: default; }
