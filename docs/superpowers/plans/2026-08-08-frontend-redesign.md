@@ -581,6 +581,9 @@ Create `frontend/src/puzzles/logic.js`:
 
 ```js
 export const SECTION_LABELS = {
+  // editorNote and teaser are camelCase to match the issue record's own field names;
+  // the puzzle keys stay kebab-case because they mirror the backend's `type` strings.
+  editorNote: "Editor's Note",
   article: 'The Article',
   crossword: 'Crossword',
   maze: 'The Maze',
@@ -590,6 +593,7 @@ export const SECTION_LABELS = {
   trivia: 'Trivia',
   logic: 'Logic',
   reasoning: 'Reasoning',
+  teaser: 'Next Issue',
 }
 
 export function toggleFound(found, word) {
@@ -1872,7 +1876,8 @@ export function Home({ issue, issues, navigate, setNotice }) {
       <section className="page-width back-issues">
         <h2>Back issues</h2>
         <div className="issue-cards">
-          {issues.map((old) => (
+          {/* The featured issue is already the hero above; listing it again as a back issue reads as a bug. */}
+          {issues.filter((old) => old.slug !== issue.slug).map((old) => (
             <button key={old.slug} className="issue-card" onClick={() => navigate(`/issues/${old.slug}`)}>
               <span className="issue-card-number">{devanagariNumber(String(old.number).padStart(3, '0'))}</span>
               <strong>{old.theme ?? old.title}</strong>
@@ -1907,7 +1912,7 @@ export function IssuePage({ issue }) {
       <Poster issue={issue} kicker={date} />
 
       <div className="page-width">
-        <SectionDivider index={0} type="article" title="Editor's note" />
+        <SectionDivider index={0} type="editorNote" title="Editor's note" />
         <div className="prose"><p>{issue.editorNote}</p></div>
 
         <SectionDivider index={1} type="article" title={issue.articleTitle || SECTION_LABELS.article} />
@@ -1924,7 +1929,7 @@ export function IssuePage({ issue }) {
           </div>
         ))}
 
-        <SectionDivider index={(issue.puzzles?.length ?? 0) + 2} type="article" title="Next issue" />
+        <SectionDivider index={(issue.puzzles?.length ?? 0) + 2} type="teaser" title="Next issue" />
         <div className="prose"><p>{issue.teaser}</p></div>
       </div>
     </main>
