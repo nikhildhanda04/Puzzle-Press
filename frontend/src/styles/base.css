@@ -1,0 +1,70 @@
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  min-width: 320px;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--body);
+  font-size: 17px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+h1, h2, h3 {
+  font-family: var(--display);
+  font-weight: 400;
+  line-height: 0.95;
+  letter-spacing: 0.01em;
+  margin: 0 0 0.4em;
+}
+
+h1 { font-size: clamp(2.6rem, 9vw, 6rem); }
+h2 { font-size: clamp(1.7rem, 4.5vw, 2.8rem); }
+h3 { font-size: clamp(1.2rem, 3vw, 1.6rem); }
+
+p { margin: 0 0 1em; }
+
+a { color: var(--red); }
+
+button, input, textarea {
+  font: inherit;
+  color: inherit;
+}
+
+button { cursor: pointer; }
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid var(--violet);
+  outline-offset: 2px;
+}
+
+/* Every interactive puzzle cell and pill shares this printed-button look. */
+.ink-button {
+  font-family: var(--chrome);
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  background: var(--paper);
+  border: var(--rule);
+  padding: 0.5rem 0.9rem;
+  box-shadow: 3px 3px 0 var(--ink);
+  transition: transform 80ms, box-shadow 80ms;
+}
+
+.ink-button:hover:not(:disabled) { transform: translate(1px, 1px); box-shadow: 2px 2px 0 var(--ink); }
+.ink-button:active:not(:disabled) { transform: translate(3px, 3px); box-shadow: none; }
+.ink-button:disabled { opacity: 0.45; cursor: not-allowed; box-shadow: none; }
+
+.ink-button.is-on {
+  background: var(--red);
+  color: var(--paper);
+}
+
+.page-width {
+  max-width: var(--page);
+  margin: 0 auto;
+  padding: 0 1.25rem;
+}

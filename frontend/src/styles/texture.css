@@ -1,0 +1,52 @@
+/* Paper grain. One inline feTurbulence, fixed to the viewport, multiplied over
+   everything. Zero network bytes, sharp at any pixel density. */
+.grain::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: 9000;
+  pointer-events: none;
+  opacity: 0.3;
+  mix-blend-mode: multiply;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+}
+
+/* Halftone dot screen. radial-gradient plus background-size tiles a real dot
+   grid; repeating-radial-gradient would draw concentric rings instead. */
+.halftone {
+  background-image: radial-gradient(var(--dot, var(--ink)) 1.1px, transparent 1.3px);
+  background-size: 6px 6px;
+}
+
+/* Sunburst rays, as on the Qutub Minar poster. */
+.sunburst {
+  background-image: repeating-conic-gradient(
+    from 0deg,
+    var(--ray, var(--red)) 0deg 5deg,
+    transparent 5deg 11deg
+  );
+}
+
+/* Off-register screen printing: the same word printed twice, slightly missed. */
+.misprint {
+  text-shadow:
+    0.035em 0.03em 0 var(--mis-a, var(--vermilion)),
+    -0.028em -0.022em 0 var(--mis-b, var(--yellow));
+}
+
+.rule-heavy {
+  border-top: 6px double var(--ink);
+}
+
+/* Tiny condensed caps used for pincodes, issue codes, credits. */
+.chrome-line {
+  font-family: var(--chrome);
+  font-size: 0.72rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}

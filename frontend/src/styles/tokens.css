@@ -1,0 +1,25 @@
+/* Palette sampled from the five reference posters: oxblood and vermilion reds,
+   chrome yellow, cream newsprint, ink black, plus the magenta/violet duotone. */
+:root {
+  --ink: #14100c;
+  --ink-soft: #4a3f33;
+
+  --paper: #efe7d5;
+  --paper-2: #e2d6bd;
+  --paper-3: #d6c7a8;
+
+  --red: #8f1d16;
+  --vermilion: #d1341f;
+  --yellow: #f2c318;
+  --magenta: #b81e5a;
+  --violet: #6b2fa0;
+
+  --display: 'Rozha One', Georgia, 'Times New Roman', serif;
+  --chrome: 'Archivo Narrow', 'Arial Narrow', Arial, sans-serif;
+  --body: 'Martel', Georgia, 'Times New Roman', serif;
+
+  --gap: 1rem;
+  --rule: 2px solid var(--ink);
+  --rule-thin: 1px solid var(--ink);
+  --page: 68rem;
+}
