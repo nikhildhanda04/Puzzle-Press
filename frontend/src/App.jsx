@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react'
 import { authClient } from './lib/authClient'
+import { fetchJson, fetchAdmin } from './lib/api'
+import { useRoute } from './lib/useRoute'
 import './App.css'
-
-const API_BASE = import.meta.env.VITE_API_BASE_URL ?? 'http://localhost:4000'
 
 const SECTIONS = ['article', 'crossword', 'maze', 'word-search', 'trivia', 'logic', 'reasoning']
 
@@ -84,18 +84,12 @@ const demoIssue = {
 }
 
 function App() {
-  const [route, setRoute] = useState(window.location.pathname)
+  const { route, navigate } = useRoute()
   const [latestIssue, setLatestIssue] = useState(demoIssue)
   const [issues, setIssues] = useState([demoIssue])
   const [adminIssues, setAdminIssues] = useState([])
   const [selectedIssueId, setSelectedIssueId] = useState('')
   const [notice, setNotice] = useState('')
-
-  useEffect(() => {
-    const onPop = () => setRoute(window.location.pathname)
-    window.addEventListener('popstate', onPop)
-    return () => window.removeEventListener('popstate', onPop)
-  }, [])
 
   useEffect(() => {
     fetchJson('/api/issues/latest').then((data) => data.issue && setLatestIssue(data.issue)).catch(() => {})
@@ -119,12 +113,6 @@ function App() {
     }
     return latestIssue
   }, [issues, latestIssue, route])
-
-  function navigate(path) {
-    window.history.pushState({}, '', path)
-    setRoute(path)
-    window.scrollTo({ top: 0, behavior: 'smooth' })
-  }
 
   return (
     <div className="paper-shell">
@@ -521,20 +509,6 @@ function Admin({ issues, setIssues, selectedIssueId, setSelectedIssueId, setNoti
       )}
     </main>
   )
-}
-
-async function fetchJson(path, options = {}) {
-  const response = await fetch(`${API_BASE}${path}`, {
-    credentials: options.credentials ?? 'same-origin',
-    headers: { 'Content-Type': 'application/json', ...(options.headers ?? {}) },
-    ...options,
-  })
-  if (!response.ok) throw new Error('Request failed')
-  return response.json()
-}
-
-function fetchAdmin(path, options = {}) {
-  return fetchJson(path, { ...options, credentials: 'include' })
 }
 
 export default App
