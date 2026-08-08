@@ -2,8 +2,11 @@ import { useEffect, useMemo, useState } from 'react'
 import { authClient } from './lib/authClient'
 import { fetchJson, fetchAdmin } from './lib/api'
 import { useRoute } from './lib/useRoute'
-import { PuzzleFrame } from './puzzles/PuzzleFrame'
 import { PuzzleRenderer } from './puzzles'
+import { Home } from './pages/Home'
+import { Archive } from './pages/Archive'
+import { IssuePage } from './pages/IssuePage'
+import { About } from './pages/About'
 import './App.css'
 
 const SECTIONS = ['article', 'crossword', 'maze', 'word-search', 'trivia', 'logic', 'reasoning']
@@ -130,7 +133,7 @@ function App() {
 
       {route === '/' && <Home issue={latestIssue} issues={issues} navigate={navigate} setNotice={setNotice} />}
       {route === '/issues' && <Archive issues={issues} navigate={navigate} />}
-      {route.startsWith('/issues/') && <Issue issue={currentIssue} />}
+      {route.startsWith('/issues/') && <IssuePage issue={currentIssue} />}
       {route === '/about' && <About />}
       {route.startsWith('/admin') && (
         <Admin
@@ -144,119 +147,6 @@ function App() {
 
       {notice && <button className="notice" onClick={() => setNotice('')}>{notice}</button>}
     </div>
-  )
-}
-
-function Home({ issue, issues, navigate, setNotice }) {
-  return (
-    <main>
-      <section className="hero-issue">
-        <div>
-          <p className="kicker">Fresh from the browser press</p>
-          <h1>Retro Weekly</h1>
-          <p className="issue-line">Issue #{String(issue.number).padStart(3, '0')} is out: {issue.theme}</p>
-          <button className="primary" onClick={() => navigate(`/issues/${issue.slug}`)}>Read Magazine</button>
-        </div>
-        <div className="cover-art" aria-hidden="true">
-          <span>8-BIT</span>
-          <span>PUZZLES</span>
-          <span>FACTS</span>
-        </div>
-      </section>
-
-      <section className="news-grid">
-        <article>
-          <h2>Latest Article</h2>
-          <h3>{issue.articleTitle}</h3>
-          <p>{issue.articleBody}</p>
-        </article>
-        <article>
-          <h2>Latest Games</h2>
-          <ul>{issue.puzzles?.map((puzzle) => <li key={puzzle.type}>{puzzle.title}</li>)}</ul>
-        </article>
-        <Subscribe setNotice={setNotice} />
-      </section>
-
-      <section className="strip">
-        <h2>Previous Issues</h2>
-        <div className="issue-cards">
-          {issues.map((oldIssue) => (
-            <button key={oldIssue.slug} onClick={() => navigate(`/issues/${oldIssue.slug}`)}>
-              <span>#{String(oldIssue.number).padStart(3, '0')}</span>
-              {oldIssue.theme}
-            </button>
-          ))}
-        </div>
-      </section>
-    </main>
-  )
-}
-
-function Archive({ issues, navigate }) {
-  return (
-    <main className="page">
-      <h1>Previous Issues</h1>
-      <div className="archive-grid">
-        {issues.map((issue) => (
-          <button key={issue.slug} onClick={() => navigate(`/issues/${issue.slug}`)}>
-            <strong>Issue #{String(issue.number).padStart(3, '0')}</strong>
-            <span>{issue.theme}</span>
-            <small>{issue.teaser}</small>
-          </button>
-        ))}
-      </div>
-    </main>
-  )
-}
-
-function Issue({ issue }) {
-  const issueDate = issue.publishedAt ? new Date(issue.publishedAt).toLocaleDateString() : 'Draft preview'
-
-  return (
-    <main className="magazine">
-      <section className="issue-title">
-        <p>==========================</p>
-        <h1>{issue.title}</h1>
-        <p>{issueDate}</p>
-        <p>Theme: {issue.theme}</p>
-        <p>==========================</p>
-      </section>
-
-      <PuzzleFrame title="Editor's Note"><p>{issue.editorNote}</p></PuzzleFrame>
-      <PuzzleFrame title={issue.articleTitle || 'Fun Article'}><p>{issue.articleBody}</p></PuzzleFrame>
-      {issue.puzzles?.map((puzzle) => <PuzzleRenderer key={puzzle.type} puzzle={puzzle} />)}
-      <PuzzleFrame title="Next Issue Teaser"><p>{issue.teaser}</p></PuzzleFrame>
-    </main>
-  )
-}
-
-function Subscribe({ setNotice }) {
-  const [email, setEmail] = useState('')
-  async function submit(event) {
-    event.preventDefault()
-    try {
-      await fetchJson('/api/subscribers', { method: 'POST', body: JSON.stringify({ email }) })
-      setEmail('')
-      setNotice('Subscribed. New issues will arrive by email.')
-    } catch {
-      setNotice('Subscription failed. Check the API and email format.')
-    }
-  }
-  return (
-    <form className="subscribe" onSubmit={submit}>
-      <h2>Subscribe</h2>
-      <input value={email} onChange={(event) => setEmail(event.target.value)} placeholder="reader@example.com" type="email" required />
-      <button>Get Issue Emails</button>
-    </form>
-  )
-}
-
-function About() {
-  return (
-    <main className="page">
-      <h1>About</h1>
-      <p>Puzzle Press is a human-reviewed, AI-assisted retro magazine. Every few days, a themed issue collects a short article and a stack of playable puzzles into one paper-like web edition.</p>
-    </main>
   )
 }
 

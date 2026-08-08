@@ -1,0 +1,56 @@
+.poster-action { background: var(--yellow); margin-top: 1.25rem; }
+
+.columns {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: 2.5rem;
+  padding-top: 2.5rem;
+  padding-bottom: 2.5rem;
+}
+
+.col-main { border-right: var(--rule-thin); padding-right: 2.5rem; }
+.col-main h2 { text-transform: uppercase; }
+.col-side { display: grid; gap: 1.25rem; align-content: start; }
+
+.contents { list-style: none; padding: 0; margin: 0; display: grid; gap: 0.35rem; }
+
+.contents li {
+  display: flex;
+  gap: 0.6rem;
+  align-items: baseline;
+  border-bottom: 1px dotted var(--ink-soft);
+  padding-bottom: 0.3rem;
+}
+
+.contents-number { font-family: var(--display); color: var(--red); font-size: 1.15rem; }
+
+.prose { max-width: 42rem; font-size: 1.05rem; }
+
+.back-issues { padding-bottom: 4rem; }
+.back-issues h2 { text-transform: uppercase; border-top: 6px double var(--ink); padding-top: 0.75rem; }
+
+.issue-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15rem, 1fr));
+  gap: 1rem;
+  margin: 1.5rem 0 3rem;
+}
+
+.issue-card {
+  display: grid;
+  gap: 0.35rem;
+  text-align: left;
+  border: var(--rule);
+  background: var(--paper-2);
+  box-shadow: 6px 6px 0 var(--red);
+  padding: 1rem;
+}
+
+.issue-card:hover { box-shadow: 3px 3px 0 var(--red); transform: translate(3px, 3px); }
+.issue-card-number { font-family: var(--display); font-size: 2.2rem; line-height: 1; color: var(--red); }
+.issue-card strong { font-family: var(--display); font-size: 1.3rem; font-weight: 400; }
+
+@media (max-width: 860px) {
+  .columns { grid-template-columns: 1fr; }
+  .col-main { border-right: 0; padding-right: 0; }
+}
