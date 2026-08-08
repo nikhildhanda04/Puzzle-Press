@@ -3,11 +3,7 @@ import { authClient } from './lib/authClient'
 import { fetchJson, fetchAdmin } from './lib/api'
 import { useRoute } from './lib/useRoute'
 import { PuzzleFrame } from './puzzles/PuzzleFrame'
-import { Crossword } from './puzzles/Crossword'
-import { Maze } from './puzzles/Maze'
-import { WordSearch } from './puzzles/WordSearch'
-import { Trivia } from './puzzles/Trivia'
-import { LogicPuzzle } from './puzzles/LogicPuzzle'
+import { PuzzleRenderer } from './puzzles'
 import './App.css'
 
 const SECTIONS = ['article', 'crossword', 'maze', 'word-search', 'trivia', 'logic', 'reasoning']
@@ -228,19 +224,10 @@ function Issue({ issue }) {
 
       <PuzzleFrame title="Editor's Note"><p>{issue.editorNote}</p></PuzzleFrame>
       <PuzzleFrame title={issue.articleTitle || 'Fun Article'}><p>{issue.articleBody}</p></PuzzleFrame>
-      {issue.puzzles?.map((puzzle) => <Puzzle key={puzzle.type} puzzle={puzzle} />)}
+      {issue.puzzles?.map((puzzle) => <PuzzleRenderer key={puzzle.type} puzzle={puzzle} />)}
       <PuzzleFrame title="Next Issue Teaser"><p>{issue.teaser}</p></PuzzleFrame>
     </main>
   )
-}
-
-function Puzzle({ puzzle }) {
-  if (puzzle.type === 'crossword') return <Crossword puzzle={puzzle} />
-  if (puzzle.type === 'maze') return <Maze puzzle={puzzle} />
-  if (puzzle.type === 'word-search') return <WordSearch puzzle={puzzle} />
-  if (puzzle.type === 'trivia' || puzzle.type === 'reasoning') return <Trivia puzzle={puzzle} />
-  if (puzzle.type === 'logic') return <LogicPuzzle puzzle={puzzle} />
-  return <PuzzleFrame title={puzzle.title}><pre>{JSON.stringify(puzzle.puzzle, null, 2)}</pre></PuzzleFrame>
 }
 
 function Subscribe({ setNotice }) {
@@ -407,7 +394,7 @@ function Admin({ issues, setIssues, selectedIssueId, setSelectedIssueId, setNoti
             <article className="draft" key={puzzle.id ?? puzzle.type}>
               <h3>{puzzle.type}</h3>
               {puzzle.prompt && <p><strong>Prompt used:</strong> {puzzle.prompt}</p>}
-              <Puzzle puzzle={puzzle} />
+              <PuzzleRenderer puzzle={puzzle} />
               <details>
                 <summary>Answers and hints</summary>
                 <pre>{JSON.stringify({ solution: puzzle.solution, hints: puzzle.hints }, null, 2)}</pre>
