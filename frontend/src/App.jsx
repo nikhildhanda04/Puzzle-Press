@@ -2,6 +2,12 @@ import { useEffect, useMemo, useState } from 'react'
 import { authClient } from './lib/authClient'
 import { fetchJson, fetchAdmin } from './lib/api'
 import { useRoute } from './lib/useRoute'
+import { PuzzleFrame } from './puzzles/PuzzleFrame'
+import { Crossword } from './puzzles/Crossword'
+import { Maze } from './puzzles/Maze'
+import { WordSearch } from './puzzles/WordSearch'
+import { Trivia } from './puzzles/Trivia'
+import { LogicPuzzle } from './puzzles/LogicPuzzle'
 import './App.css'
 
 const SECTIONS = ['article', 'crossword', 'maze', 'word-search', 'trivia', 'logic', 'reasoning']
@@ -220,16 +226,12 @@ function Issue({ issue }) {
         <p>==========================</p>
       </section>
 
-      <MagazineSection title="Editor's Note"><p>{issue.editorNote}</p></MagazineSection>
-      <MagazineSection title={issue.articleTitle || 'Fun Article'}><p>{issue.articleBody}</p></MagazineSection>
+      <PuzzleFrame title="Editor's Note"><p>{issue.editorNote}</p></PuzzleFrame>
+      <PuzzleFrame title={issue.articleTitle || 'Fun Article'}><p>{issue.articleBody}</p></PuzzleFrame>
       {issue.puzzles?.map((puzzle) => <Puzzle key={puzzle.type} puzzle={puzzle} />)}
-      <MagazineSection title="Next Issue Teaser"><p>{issue.teaser}</p></MagazineSection>
+      <PuzzleFrame title="Next Issue Teaser"><p>{issue.teaser}</p></PuzzleFrame>
     </main>
   )
-}
-
-function MagazineSection({ title, children }) {
-  return <section className="mag-section"><h2>{title}</h2>{children}</section>
 }
 
 function Puzzle({ puzzle }) {
@@ -238,94 +240,7 @@ function Puzzle({ puzzle }) {
   if (puzzle.type === 'word-search') return <WordSearch puzzle={puzzle} />
   if (puzzle.type === 'trivia' || puzzle.type === 'reasoning') return <Trivia puzzle={puzzle} />
   if (puzzle.type === 'logic') return <LogicPuzzle puzzle={puzzle} />
-  return <MagazineSection title={puzzle.title}><pre>{JSON.stringify(puzzle.puzzle, null, 2)}</pre></MagazineSection>
-}
-
-function Crossword({ puzzle }) {
-  const answers = puzzle.puzzle?.entries ?? []
-  const size = puzzle.puzzle?.size ?? 7
-  return (
-    <MagazineSection title={puzzle.title}>
-      <div className="crossword-grid" style={{ '--size': size }}>
-        {Array.from({ length: size * size }).map((_, index) => <input key={index} maxLength="1" aria-label={`Crossword cell ${index + 1}`} />)}
-      </div>
-      <ol className="clues">{answers.map((entry, index) => <li key={index}>{entry.clue}</li>)}</ol>
-    </MagazineSection>
-  )
-}
-
-function Maze({ puzzle }) {
-  const data = puzzle.puzzle ?? {}
-  const rows = data.rows ?? 7
-  const cols = data.cols ?? 7
-  const walls = new Set((data.walls ?? []).map((cell) => cell.join(',')))
-  const [marked, setMarked] = useState(new Set())
-
-  return (
-    <MagazineSection title={puzzle.title}>
-      <div className="maze-grid" style={{ '--cols': cols }}>
-        {Array.from({ length: rows * cols }).map((_, index) => {
-          const row = Math.floor(index / cols)
-          const col = index % cols
-          const key = `${row},${col}`
-          const isWall = walls.has(key)
-          return (
-            <button
-              key={key}
-              disabled={isWall}
-              className={`${isWall ? 'wall' : ''} ${marked.has(key) ? 'marked' : ''}`}
-              onClick={() => setMarked((old) => new Set(old).add(key))}
-            >
-              {key === (data.start ?? [0, 0]).join(',') ? 'S' : key === (data.finish ?? [rows - 1, cols - 1]).join(',') ? 'F' : ''}
-            </button>
-          )
-        })}
-      </div>
-    </MagazineSection>
-  )
-}
-
-function WordSearch({ puzzle }) {
-  const [found, setFound] = useState([])
-  const words = puzzle.puzzle?.words ?? []
-  return (
-    <MagazineSection title={puzzle.title}>
-      <div className="word-grid">{(puzzle.puzzle?.grid ?? []).flatMap((row) => row.split('').map((letter, index) => <button key={`${row}-${index}`}>{letter}</button>))}</div>
-      <div className="word-list">{words.map((word) => <button key={word} className={found.includes(word) ? 'found' : ''} onClick={() => setFound((old) => old.includes(word) ? old : [...old, word])}>{word}</button>)}</div>
-    </MagazineSection>
-  )
-}
-
-function Trivia({ puzzle }) {
-  const [answers, setAnswers] = useState({})
-  const questions = puzzle.puzzle?.questions ?? []
-  const score = questions.filter((q, i) => answers[i] === q.answer).length
-  return (
-    <MagazineSection title={puzzle.title}>
-      <p className="score">Score: {score}/{questions.length}</p>
-      {questions.map((question, index) => (
-        <div className="trivia" key={question.question}>
-          <p>{question.difficulty && <span className="difficulty">{question.difficulty}</span>}{question.question}</p>
-          {(question.options ?? []).map((option) => <button key={option} className={answers[index] === option ? 'selected' : ''} onClick={() => setAnswers({ ...answers, [index]: option })}>{option}</button>)}
-          {answers[index] && question.explanation && <p className="explanation">{question.explanation}</p>}
-        </div>
-      ))}
-    </MagazineSection>
-  )
-}
-
-function LogicPuzzle({ puzzle }) {
-  const [choice, setChoice] = useState('')
-  const data = puzzle.puzzle ?? {}
-  return (
-    <MagazineSection title={puzzle.title}>
-      <p>{data.setup}</p>
-      <div className="word-list">
-        {(data.choices ?? []).map((option) => <button key={option} className={choice === option ? 'selected' : ''} onClick={() => setChoice(option)}>{option}</button>)}
-      </div>
-      {choice && <p className="score">{choice === data.answer ? 'Correct.' : 'Not quite.'}</p>}
-    </MagazineSection>
-  )
+  return <PuzzleFrame title={puzzle.title}><pre>{JSON.stringify(puzzle.puzzle, null, 2)}</pre></PuzzleFrame>
 }
 
 function Subscribe({ setNotice }) {
